@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "493888466142",
+    "project_id": "lost-and-found49",
+    "storage_bucket": "lost-and-found49.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493888466142:android:882756f2f39320bc32264f",
+        "android_client_info": {
+          "package_name": "com.ink.lnf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493888466142-f37r09fclf1km6mges7hucai7b73nnl5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATmbYLvF9JUxL6oCNPPq4fJaGAtmZxW-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493888466142-3h9gmg132fbott5pn3blmeo7aqu22hov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

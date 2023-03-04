@@ -1,5 +1,6 @@
 package com.ink.lnf.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -34,7 +35,7 @@ class SignUpActivity : BaseActivity() {
                         val firebaseUser: FirebaseUser = task.result!!.user!!
                         val firebaseEmail = firebaseUser!!.email!!
                         Toast.makeText(this, "$name , you've registered successfully!",Toast.LENGTH_LONG).show()
-                        FirebaseAuth.getInstance().signOut()
+                        startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     } else{
                         Toast.makeText(this, task.exception!!.message, Toast.LENGTH_LONG).show()

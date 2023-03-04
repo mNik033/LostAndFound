@@ -1,6 +1,7 @@
 package com.ink.lnf.activities
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -45,6 +46,7 @@ class SignInActivity : BaseActivity() {
                         Toast.makeText(baseContext, "Signed in successfully!",
                             Toast.LENGTH_LONG).show()
                         val user = auth.currentUser
+                        startActivity(Intent(this, MainActivity::class.java))
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)

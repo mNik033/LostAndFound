@@ -17,6 +17,7 @@
             android:id="@+id/uname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:height="60dp"
             android:hint="Name" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,18 +30,22 @@
             android:id="@+id/uemail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:height="60dp"
             android:hint="E-Mail" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        app:endIconMode="password_toggle"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/upass"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:height="60dp"
             android:hint="Password" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,6 +55,7 @@
         android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:height="60dp"
         android:text="Sign Up" />
 
 </LinearLayout>

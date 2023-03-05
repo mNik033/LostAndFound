@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.ink.lnf.R
@@ -26,8 +27,13 @@ open class BaseActivity : AppCompatActivity() {
         mProgressDialog.show()
     }
 
-    fun getCurrentUserID(): String{
-        return FirebaseAuth.getInstance().currentUser!!.uid
+    fun getCurrentUserID(): String {
+        var currentUser = FirebaseAuth.getInstance().currentUser
+        var currentUserID =""
+        if(currentUser != null){
+            currentUserID = currentUser.uid
+        }
+        return currentUserID
     }
 
     fun hideProgressDialog(){

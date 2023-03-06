@@ -46,4 +46,11 @@ open class BaseActivity : AppCompatActivity() {
         snackBarView.setBackgroundColor(ContextCompat.getColor(this,R.color.snackbar_error_color))
         snackBar.show()
     }
+
+    /* Function to change fragments just in case
+    fun setCurrentFragment(fragment: Fragment) =
+    supportFragmentManager.beginTransaction().apply {
+        replace(R.id.fragContainer, fragment)
+        commit()
+    }*/
 }

@@ -42,11 +42,12 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/upass"
-            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:height="60dp"
-            android:hint="Password" />
+            android:hint="Password"
+            android:inputType="textPassword"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

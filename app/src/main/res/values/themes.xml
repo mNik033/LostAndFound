@@ -1,6 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.LostAndFound" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#00FFFFFF</item>
         <!-- Primary brand color. -->
+    </style>
+    <style name="ShapeAppearanceOverlay.App.CornerSize10Percent" parent="">
+        <item name="cornerSize">10%</item>
     </style>
 </resources>

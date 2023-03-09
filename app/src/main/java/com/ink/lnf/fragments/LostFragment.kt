@@ -1,17 +1,17 @@
 package com.ink.lnf.fragments
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.ink.lnf.R
 import com.ink.lnf.activities.AddLostActivity
-import com.ink.lnf.activities.MainActivity
 import kotlinx.android.synthetic.main.fragment_lost.*
 
 class LostFragment : Fragment() {
@@ -25,6 +25,13 @@ class LostFragment : Fragment() {
             val intent = Intent (getActivity(), AddLostActivity::class.java)
             getActivity()?.startActivity(intent)
         }
+
+        /* icon color -> black
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            activity?.getWindow()?.getDecorView()?.getWindowInsetsController()
+                ?.setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS)
+        } */
+
         idrecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             // set the custom adapter to the RecyclerView

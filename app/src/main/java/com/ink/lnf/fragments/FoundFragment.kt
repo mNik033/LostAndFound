@@ -22,7 +22,7 @@ class FoundFragment : Fragment() {
             val intent = Intent(getActivity(), AddFoundActivity::class.java)
             getActivity()?.startActivity(intent)
         }
-            idrecyclerView2.apply {
+            idrecyclerView.apply {
                 layoutManager = LinearLayoutManager(activity)
                 // set adapter
                 adapter = RecyclerAdapter(requireActivity(), getItemsList())

@@ -2,6 +2,7 @@ package com.ink.lnf.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import com.ink.lnf.R
 
@@ -12,5 +13,10 @@ class AddFoundActivity : AppCompatActivity() {
 
         var tv = findViewById<TextView>(R.id.idadditem)
         tv.text = "Add found item"
+
+        var x = findViewById<ImageView>(R.id.idX)
+        x.setOnClickListener {
+            finish()
+        }
     }
 }

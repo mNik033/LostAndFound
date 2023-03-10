@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.ink.lnf.R
+import com.ink.lnf.firebase.FirestoreClass
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
@@ -43,6 +44,7 @@ class SignInActivity : BaseActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
+                        FirestoreClass().signInUser(this)
                         Toast.makeText(baseContext, "Signed in successfully!",
                             Toast.LENGTH_LONG).show()
                         val user = auth.currentUser

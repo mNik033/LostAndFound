@@ -11,6 +11,8 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.ink.lnf.R
+import com.ink.lnf.firebase.FirestoreClass
+import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : BaseActivity() {
@@ -34,6 +36,8 @@ class SignUpActivity : BaseActivity() {
                     if(task.isSuccessful){
                         val firebaseUser: FirebaseUser = task.result!!.user!!
                         val firebaseEmail = firebaseUser!!.email!!
+                        val user = User(firebaseUser.uid, name, firebaseEmail)
+                        FirestoreClass().registerUser(this, user)
                         Toast.makeText(this, "$name , you've registered successfully!",Toast.LENGTH_LONG).show()
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()

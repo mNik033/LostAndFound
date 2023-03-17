@@ -14,7 +14,7 @@
     <color name="colorPrimaryDark">#FF0591F8</color>
 
     <color name="primary_text_color">#FF363A43</color>
-    <color name="secondary_text_color">#FF7A8089</color>
+    <color name="secondary_text_color">@color/material_dynamic_neutral30</color>
 
     <color name="snackbar_error_color">#D31717</color>
 </resources>

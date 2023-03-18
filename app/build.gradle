@@ -61,6 +61,10 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
     implementation 'com.github.bumptech.glide:glide:4.15.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+    implementation ("com.github.bumptech.glide:recyclerview-integration:4.14.2") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
     implementation 'com.google.firebase:firebase-storage-ktx'
 

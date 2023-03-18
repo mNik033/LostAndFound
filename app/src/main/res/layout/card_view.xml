@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/idItemImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
@@ -33,11 +34,13 @@
                 android:layout_height="wrap_content"
                 android:text="Item name"/>
             <TextView
+                android:id="@+id/idItemLocation"
                 android:paddingHorizontal="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Location"/>
             <TextView
+                android:id="@+id/idItemDate"
                 android:paddingHorizontal="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

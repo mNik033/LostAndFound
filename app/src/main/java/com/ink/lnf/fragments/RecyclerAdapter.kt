@@ -1,39 +1,43 @@
 package com.ink.lnf.fragments
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ink.lnf.R
-import kotlinx.android.synthetic.main.card_view.view.*
+import com.ink.lnf.models.Lost
 
-class RecyclerAdapter(val context: Context, val items: ArrayList<String>) :
-        RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
+class RecyclerAdapter(private val List : ArrayList<Lost>):
+        RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>(){
+        class ItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+                val Name : TextView = itemView.findViewById(R.id.idItemName)
+                val Location : TextView = itemView.findViewById(R.id.idItemLocation)
+                val Date : TextView = itemView.findViewById(R.id.idItemDate)
+                val Image: ImageView = itemView.findViewById(R.id.idItemImage)
+        }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-                        return ViewHolder(
-                                LayoutInflater.from(context).inflate(
-                                        R.layout.card_view,
-                                        parent,
-                                        false
-                                )
-                        )
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+                val itemView = LayoutInflater.from(parent.context)
+                                .inflate(R.layout.card_view, parent, false)
+                return ItemViewHolder(itemView)
+        }
 
-                }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                val item = items.get(position)
-                holder.tvItem.text = item
+        override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+                holder.Name.text = List[position].name
+                holder.Location.text = List[position].location
+                holder.Date.text = List[position].date
+                Glide
+                        .with(holder.Image)
+                        .load(List[position].image)
+                        .placeholder(R.drawable.ic_baseline_image_24)
+                        .centerCrop()
+                        .into(holder.Image);
         }
 
         override fun getItemCount(): Int {
-                return items.size
-        }
-
-        class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
-                var tvItem = view.idItemName
-                var cardViewItem = view.idCardView
+                return List.size
         }
 }

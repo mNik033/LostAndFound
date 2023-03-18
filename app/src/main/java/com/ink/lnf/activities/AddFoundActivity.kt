@@ -1,7 +1,6 @@
 package com.ink.lnf.activities
 
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,7 +14,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.ink.lnf.R
 import com.ink.lnf.models.Found
-import com.ink.lnf.models.Lost
 import kotlinx.android.synthetic.main.activity_add_item.*
 import java.time.LocalDateTime
 
@@ -27,7 +25,7 @@ class AddFoundActivity : BaseActivity() {
 
     private var storageRef = Firebase.storage
 
-    private lateinit var uri : Uri
+    private var uri : Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,33 +49,46 @@ class AddFoundActivity : BaseActivity() {
             galleryimage.launch("image/*")
         }
 
-        var tv = findViewById<TextView>(R.id.idadditem)
+        val tv = findViewById<TextView>(R.id.idadditem)
         tv.text = "Add found item"
 
-        var x = findViewById<ImageView>(R.id.idX)
+        val x = findViewById<ImageView>(R.id.idX)
         x.setOnClickListener {
             finish()
         }
 
         btnSave.setOnClickListener {
-            Toast.makeText(this, "Please wait while the information is being uploaded to the cloud", Toast.LENGTH_LONG).show()
-            // TODO: Use a loading animation here instead
-            storageRef.getReference("images").child(System.currentTimeMillis().toString())
-                .putFile(uri)
-                .addOnSuccessListener {task ->
-                    task.metadata!!.reference!!.downloadUrl
-                        .addOnSuccessListener {
-                            val image = it.toString()
-                            val name = idadditemName.text.toString()
-                            val location = idadditemLocation.text.toString()
-                            val date = idadditemDate.text.toString()
-                            val contact = idadditemContact.text.toString()
-                            val description = idadditemDesc.text.toString()
-                            val foundItemInfo = Found(getCurrentUserID(), image, name, location, date, contact, description)
-                            addFoundItem(foundItemInfo)
-                            finish()
-                        }
-                }
+            showProgressDialog("Uploading iniformation")
+            if (uri != null) {
+                storageRef.getReference("images").child(System.currentTimeMillis().toString())
+                    .putFile(uri!!)
+                    .addOnSuccessListener { task ->
+                        task.metadata!!.reference!!.downloadUrl
+                            .addOnSuccessListener {
+                                val image = it.toString()
+                                val name = idadditemName.text.toString()
+                                val location = idadditemLocation.text.toString()
+                                val date = idadditemDate.text.toString()
+                                val contact = idadditemContact.text.toString()
+                                val description = idadditemDesc.text.toString()
+                                val foundItemInfo = Found(
+                                    getCurrentUserID(), image, name, location, date, contact, description
+                                )
+                                addFoundItem(foundItemInfo)
+                                finish()
+                            }
+                    }
+            } else {
+                val name = idadditemName.text.toString()
+                val location = idadditemLocation.text.toString()
+                val date = idadditemDate.text.toString()
+                val contact = idadditemContact.text.toString()
+                val description = idadditemDesc.text.toString()
+                val foundItemInfo =
+                    Found(getCurrentUserID(), "", name, location, date, contact, description)
+                addFoundItem(foundItemInfo)
+                finish()
+            }
         }
     }
 

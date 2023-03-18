@@ -35,7 +35,7 @@ class AddLostActivity : BaseActivity() {
 
     private var storageRef = Firebase.storage
 
-    private lateinit var uri : Uri
+    private var uri : Uri? = null
 
     /*private val contract = registerForActivityResult(ActivityResultContracts.GetContent()){
         imageView.setImageURI(it)
@@ -78,24 +78,37 @@ class AddLostActivity : BaseActivity() {
         }
 
         btnSave.setOnClickListener {
-            Toast.makeText(this, "Please wait while the information is being uploaded to the cloud", Toast.LENGTH_LONG).show()
-            // TODO: Use a loading animation here instead
-            storageRef.getReference("images").child(System.currentTimeMillis().toString())
-                .putFile(uri)
-                .addOnSuccessListener {task ->
-                    task.metadata!!.reference!!.downloadUrl
-                        .addOnSuccessListener {
-                            val image = it.toString()
-                            val name = idadditemName.text.toString()
-                            val location = idadditemLocation.text.toString()
-                            val date = idadditemDate.text.toString()
-                            val contact = idadditemContact.text.toString()
-                            val description = idadditemDesc.text.toString()
-                            val lostItemInfo = Lost(getCurrentUserID(), image, name, location, date, contact, description)
-                            addLostItem(lostItemInfo)
-                            finish()
-                        }
-                }
+            showProgressDialog("Uploading information")
+            if (uri != null) {
+                storageRef.getReference("images").child(System.currentTimeMillis().toString())
+                    .putFile(uri!!)
+                    .addOnSuccessListener { task ->
+                        task.metadata!!.reference!!.downloadUrl
+                            .addOnSuccessListener {
+                                val image = it.toString()
+                                val name = idadditemName.text.toString()
+                                val location = idadditemLocation.text.toString()
+                                val date = idadditemDate.text.toString()
+                                val contact = idadditemContact.text.toString()
+                                val description = idadditemDesc.text.toString()
+                                val lostItemInfo = Lost(
+                                    getCurrentUserID(), image, name, location, date, contact, description
+                                )
+                                addLostItem(lostItemInfo)
+                                finish()
+                            }
+                    }
+            } else {
+                val name = idadditemName.text.toString()
+                val location = idadditemLocation.text.toString()
+                val date = idadditemDate.text.toString()
+                val contact = idadditemContact.text.toString()
+                val description = idadditemDesc.text.toString()
+                val lostItemInfo =
+                    Lost(getCurrentUserID(), "", name, location, date, contact, description)
+                addLostItem(lostItemInfo)
+                finish()
+            }
         }
     }
 

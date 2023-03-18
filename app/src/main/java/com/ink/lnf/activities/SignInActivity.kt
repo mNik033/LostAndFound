@@ -27,6 +27,7 @@ class SignInActivity : BaseActivity() {
         setContentView(R.layout.activity_sign_in)
 
         btnSignIn.setOnClickListener(){
+            it.hideKeyboard()
             signInRegisteredUser()
         }
     }

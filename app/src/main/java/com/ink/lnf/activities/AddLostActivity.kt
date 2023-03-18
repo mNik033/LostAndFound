@@ -7,7 +7,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import com.firebase.ui.auth.data.model.User.getUser
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -22,6 +25,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.ink.lnf.R
+import com.ink.lnf.fragments.FoundFragment
+import com.ink.lnf.fragments.LostFragment
 import com.ink.lnf.models.Lost
 import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_add_item.*
@@ -78,36 +83,59 @@ class AddLostActivity : BaseActivity() {
         }
 
         btnSave.setOnClickListener {
-            showProgressDialog("Uploading information")
-            if (uri != null) {
-                storageRef.getReference("images").child(System.currentTimeMillis().toString())
-                    .putFile(uri!!)
-                    .addOnSuccessListener { task ->
-                        task.metadata!!.reference!!.downloadUrl
-                            .addOnSuccessListener {
-                                val image = it.toString()
-                                val name = idadditemName.text.toString()
-                                val location = idadditemLocation.text.toString()
-                                val date = idadditemDate.text.toString()
-                                val contact = idadditemContact.text.toString()
-                                val description = idadditemDesc.text.toString()
-                                val lostItemInfo = Lost(
-                                    getCurrentUserID(), image, name, location, date, contact, description
-                                )
-                                addLostItem(lostItemInfo)
-                                finish()
-                            }
-                    }
-            } else {
-                val name = idadditemName.text.toString()
-                val location = idadditemLocation.text.toString()
-                val date = idadditemDate.text.toString()
-                val contact = idadditemContact.text.toString()
-                val description = idadditemDesc.text.toString()
-                val lostItemInfo =
-                    Lost(getCurrentUserID(), "", name, location, date, contact, description)
-                addLostItem(lostItemInfo)
-                finish()
+
+            val name = idadditemName.text.toString()
+            val location = idadditemLocation.text.toString()
+            val date = idadditemDate.text.toString()
+            val contact = idadditemContact.text.toString()
+            val description = idadditemDesc.text.toString()
+
+            it.hideKeyboard()
+
+            if (validateForm(name, location, date)) {
+                showProgressDialog("Uploading information")
+                if (uri != null) {
+                    storageRef.getReference("images")
+                        .child(System.currentTimeMillis().toString())
+                        .putFile(uri!!)
+                        .addOnSuccessListener { task ->
+                            task.metadata!!.reference!!.downloadUrl
+                                .addOnSuccessListener {
+                                    val image = it.toString()
+                                    val lostItemInfo =
+                                        Lost(getCurrentUserID(), image, name, location, date, contact, description)
+                                    addLostItem(lostItemInfo)
+                                    hideProgressDialog()
+                                    finish()
+                                }
+                        }
+                } else {
+                    val lostItemInfo =
+                        Lost(getCurrentUserID(), "", name, location, date, contact, description)
+                    addLostItem(lostItemInfo)
+                    hideProgressDialog()
+                    finish()
+                }
+            }
+        }
+    }
+
+    private fun validateForm(name: String, location: String, date: String) : Boolean {
+        return when {
+            TextUtils.isEmpty(name)->{
+                showErrorSnackbar("Please enter the name of item lost")
+                false
+            }
+            TextUtils.isEmpty(location)->{
+                showErrorSnackbar("Please enter an approximate location")
+                false
+            }
+            TextUtils.isEmpty(date)->{
+                showErrorSnackbar("Please enter an approximate date")
+                false
+            }
+            else->{
+                true
             }
         }
     }

@@ -35,6 +35,8 @@ class FoundFragment : Fragment() {
 
         idrecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
+            (layoutManager as LinearLayoutManager).setReverseLayout(true)
+            (layoutManager as LinearLayoutManager).setStackFromEnd(true)
         }
 
         foundList = arrayListOf()

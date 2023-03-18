@@ -20,6 +20,7 @@ class SignUpActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         btnSignUp.setOnClickListener {
+            it.hideKeyboard()
             registerUser()
         }
     }

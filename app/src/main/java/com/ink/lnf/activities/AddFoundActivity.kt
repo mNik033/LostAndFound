@@ -2,6 +2,7 @@ package com.ink.lnf.activities
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -58,36 +59,59 @@ class AddFoundActivity : BaseActivity() {
         }
 
         btnSave.setOnClickListener {
-            showProgressDialog("Uploading iniformation")
-            if (uri != null) {
-                storageRef.getReference("images").child(System.currentTimeMillis().toString())
-                    .putFile(uri!!)
-                    .addOnSuccessListener { task ->
-                        task.metadata!!.reference!!.downloadUrl
-                            .addOnSuccessListener {
-                                val image = it.toString()
-                                val name = idadditemName.text.toString()
-                                val location = idadditemLocation.text.toString()
-                                val date = idadditemDate.text.toString()
-                                val contact = idadditemContact.text.toString()
-                                val description = idadditemDesc.text.toString()
-                                val foundItemInfo = Found(
-                                    getCurrentUserID(), image, name, location, date, contact, description
-                                )
-                                addFoundItem(foundItemInfo)
-                                finish()
-                            }
-                    }
-            } else {
-                val name = idadditemName.text.toString()
-                val location = idadditemLocation.text.toString()
-                val date = idadditemDate.text.toString()
-                val contact = idadditemContact.text.toString()
-                val description = idadditemDesc.text.toString()
-                val foundItemInfo =
-                    Found(getCurrentUserID(), "", name, location, date, contact, description)
-                addFoundItem(foundItemInfo)
-                finish()
+
+            val name = idadditemName.text.toString()
+            val location = idadditemLocation.text.toString()
+            val date = idadditemDate.text.toString()
+            val contact = idadditemContact.text.toString()
+            val description = idadditemDesc.text.toString()
+
+            it.hideKeyboard()
+
+            if(validateForm(name,location,date)) {
+                showProgressDialog("Uploading information")
+                if (uri != null) {
+                    storageRef.getReference("images")
+                        .child(System.currentTimeMillis().toString())
+                        .putFile(uri!!)
+                        .addOnSuccessListener { task ->
+                            task.metadata!!.reference!!.downloadUrl
+                                .addOnSuccessListener {
+                                    val image = it.toString()
+                                    val foundItemInfo =
+                                        Found(getCurrentUserID(), image, name, location, date, contact, description)
+                                    addFoundItem(foundItemInfo)
+                                    hideProgressDialog()
+                                    finish()
+                                }
+                        }
+                } else {
+                    val foundItemInfo =
+                        Found(getCurrentUserID(), "", name, location, date, contact, description)
+                    addFoundItem(foundItemInfo)
+                    hideProgressDialog()
+                    finish()
+                }
+            }
+        }
+    }
+
+    private fun validateForm(name: String, location: String, date: String) : Boolean {
+        return when {
+            TextUtils.isEmpty(name)->{
+                showErrorSnackbar("Please enter the name of item lost")
+                false
+            }
+            TextUtils.isEmpty(location)->{
+                showErrorSnackbar("Please enter an approximate location")
+                false
+            }
+            TextUtils.isEmpty(date)->{
+                showErrorSnackbar("Please enter an approximate date")
+                false
+            }
+            else->{
+                true
             }
         }
     }

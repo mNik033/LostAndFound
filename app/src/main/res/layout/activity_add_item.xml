@@ -134,6 +134,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:id="@+id/idadditemDate"
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:height="60dp"

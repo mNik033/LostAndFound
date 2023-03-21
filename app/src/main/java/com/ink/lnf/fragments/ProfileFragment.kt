@@ -40,6 +40,6 @@ class ProfileFragment: Fragment() {
             .placeholder(R.drawable.ic_baseline_account_circle_24)
             .centerCrop()
             .circleCrop()
-            .into(idPProfilePic);
+            .into(idProfilePic);
     }
 }

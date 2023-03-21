@@ -1,22 +1,29 @@
 package com.ink.lnf.activities
 
+import android.app.DatePickerDialog
+import android.content.ContentValues
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.ink.lnf.R
 import com.ink.lnf.models.Found
+import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_add_item.*
 import java.time.LocalDateTime
+import java.util.*
 
 class AddFoundActivity : BaseActivity() {
 
@@ -28,11 +35,27 @@ class AddFoundActivity : BaseActivity() {
 
     private var uri : Uri? = null
 
+    private lateinit var username : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
 
         storageRef = FirebaseStorage.getInstance()
+
+        val db = Firebase.firestore
+
+        val docRef = db.collection("users").document(getCurrentUserID())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    username = document.data?.get("name") as String
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
+
 
         val imageView = findViewById<ImageView>(R.id.addItemImage)
 
@@ -58,6 +81,27 @@ class AddFoundActivity : BaseActivity() {
             finish()
         }
 
+        val datePicker = findViewById<TextInputEditText>(R.id.idadditemDate)
+
+        datePicker.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val dpd = DatePickerDialog(this,
+                { view, year, monthOfYear, dayOfMonth ->
+                    val dt = (dayOfMonth.toString() + "-" +
+                            (monthOfYear + 1) + "-" + year)
+                    datePicker.setText(dt)
+                },
+                year,
+                month,
+                day
+            )
+            dpd.show()
+        }
+
         btnSave.setOnClickListener {
 
             val name = idadditemName.text.toString()
@@ -79,7 +123,8 @@ class AddFoundActivity : BaseActivity() {
                                 .addOnSuccessListener {
                                     val image = it.toString()
                                     val foundItemInfo =
-                                        Found(getCurrentUserID(), image, name, location, date, contact, description)
+                                        Found(getCurrentUserID(), username, image, name,
+                                            location, date, contact, description, false)
                                     addFoundItem(foundItemInfo)
                                     hideProgressDialog()
                                     finish()
@@ -87,7 +132,8 @@ class AddFoundActivity : BaseActivity() {
                         }
                 } else {
                     val foundItemInfo =
-                        Found(getCurrentUserID(), "", name, location, date, contact, description)
+                        Found(getCurrentUserID(), username, "", name,
+                            location, date, contact, description, false)
                     addFoundItem(foundItemInfo)
                     hideProgressDialog()
                     finish()

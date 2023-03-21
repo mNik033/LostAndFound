@@ -1,36 +1,32 @@
 package com.ink.lnf.activities
 
-import android.app.Activity
-import android.content.Intent
-import android.media.Image
+import android.app.DatePickerDialog
+import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import com.firebase.ui.auth.data.model.User.getUser
-import com.google.android.material.internal.ViewUtils.hideKeyboard
-import com.google.firebase.auth.FirebaseUser
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.ink.lnf.R
-import com.ink.lnf.fragments.FoundFragment
-import com.ink.lnf.fragments.LostFragment
+import com.ink.lnf.firebase.FirestoreClass
 import com.ink.lnf.models.Lost
 import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_add_item.*
 import java.time.LocalDateTime
+import java.util.*
 
 class AddLostActivity : BaseActivity() {
 
@@ -42,6 +38,9 @@ class AddLostActivity : BaseActivity() {
 
     private var uri : Uri? = null
 
+    private lateinit var username : String
+
+    //private lateinit var username : String
     /*private val contract = registerForActivityResult(ActivityResultContracts.GetContent()){
         imageView.setImageURI(it)
         addPic.setText("Change Picture")
@@ -52,6 +51,19 @@ class AddLostActivity : BaseActivity() {
         setContentView(R.layout.activity_add_item)
 
         storageRef = FirebaseStorage.getInstance()
+
+        val db = Firebase.firestore
+
+        val docRef = db.collection("users").document(getCurrentUserID())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    username = document.data?.get("name") as String
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
 
         val imageView = findViewById<ImageView>(R.id.addItemImage)
 
@@ -82,6 +94,27 @@ class AddLostActivity : BaseActivity() {
             finish()
         }
 
+        val datePicker = findViewById<TextInputEditText>(R.id.idadditemDate)
+
+        datePicker.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val dpd = DatePickerDialog(this,
+                { view, year, monthOfYear, dayOfMonth ->
+                    val dt = (dayOfMonth.toString() + "-" +
+                            (monthOfYear + 1) + "-" + year)
+                    datePicker.setText(dt)
+                },
+                year,
+                month,
+                day
+            )
+            dpd.show()
+        }
+
         btnSave.setOnClickListener {
 
             val name = idadditemName.text.toString()
@@ -89,6 +122,22 @@ class AddLostActivity : BaseActivity() {
             val date = idadditemDate.text.toString()
             val contact = idadditemContact.text.toString()
             val description = idadditemDesc.text.toString()
+
+            /*val db = Firebase.firestore
+
+            val docRef = db.collection("users").document(getCurrentUserID())
+
+            docRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val userInfo = document.toObject(User::class.java)
+                    } else {
+                        Log.d(TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                } */
 
             it.hideKeyboard()
 
@@ -103,7 +152,8 @@ class AddLostActivity : BaseActivity() {
                                 .addOnSuccessListener {
                                     val image = it.toString()
                                     val lostItemInfo =
-                                        Lost(getCurrentUserID(), image, name, location, date, contact, description)
+                                        Lost(getCurrentUserID(), username, image, name,
+                                            location, date, contact, description, false)
                                     addLostItem(lostItemInfo)
                                     hideProgressDialog()
                                     finish()
@@ -111,7 +161,8 @@ class AddLostActivity : BaseActivity() {
                         }
                 } else {
                     val lostItemInfo =
-                        Lost(getCurrentUserID(), "", name, location, date, contact, description)
+                        Lost(getCurrentUserID(), username, "", name,
+                            location, date, contact, description, false)
                     addLostItem(lostItemInfo)
                     hideProgressDialog()
                     finish()

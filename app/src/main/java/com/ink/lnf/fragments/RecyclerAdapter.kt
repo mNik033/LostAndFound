@@ -16,6 +16,7 @@ class RecyclerAdapter(private val List : ArrayList<Lost>):
                 val Name : TextView = itemView.findViewById(R.id.idItemName)
                 val Location : TextView = itemView.findViewById(R.id.idItemLocation)
                 val Date : TextView = itemView.findViewById(R.id.idItemDate)
+                val userName : TextView = itemView.findViewById(R.id.idItemUName)
                 val Image: ImageView = itemView.findViewById(R.id.idItemImage)
         }
 
@@ -29,6 +30,7 @@ class RecyclerAdapter(private val List : ArrayList<Lost>):
                 holder.Name.text = List[position].name
                 holder.Location.text = List[position].location
                 holder.Date.text = List[position].date
+                holder.userName.text = List[position].username
                 Glide
                         .with(holder.Image)
                         .load(List[position].image)

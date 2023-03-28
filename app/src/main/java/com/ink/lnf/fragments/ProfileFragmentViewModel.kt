@@ -16,4 +16,8 @@ class ProfileFragmentViewModel : ViewModel(){
     fun setImage(newData: String){
         image.value = newData
     }
+    val mobile = MutableLiveData<Long>()
+    fun setMobile(newData: Long){
+        mobile.value = newData
+    }
 }

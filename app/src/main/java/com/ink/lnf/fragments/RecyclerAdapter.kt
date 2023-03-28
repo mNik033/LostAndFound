@@ -12,18 +12,34 @@ import com.ink.lnf.models.Lost
 
 class RecyclerAdapter(private val List : ArrayList<Lost>):
         RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>(){
-        class ItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+
+        private lateinit var mListener: onItemClickListener
+        interface onItemClickListener{
+                fun onItemClick(position : Int)
+        }
+        fun setOnItemClickListener(listener: onItemClickListener){
+                mListener = listener
+        }
+
+        class ItemViewHolder(itemView : View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView){
                 val Name : TextView = itemView.findViewById(R.id.idItemName)
                 val Location : TextView = itemView.findViewById(R.id.idItemLocation)
                 val Date : TextView = itemView.findViewById(R.id.idItemDate)
                 val userName : TextView = itemView.findViewById(R.id.idItemUName)
                 val Image: ImageView = itemView.findViewById(R.id.idItemImage)
+
+                init {
+                    itemView.setOnClickListener {
+                            listener.onItemClick(adapterPosition)
+                    }
+                }
+
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
                 val itemView = LayoutInflater.from(parent.context)
                                 .inflate(R.layout.card_view, parent, false)
-                return ItemViewHolder(itemView)
+                return ItemViewHolder(itemView, mListener)
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {

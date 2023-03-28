@@ -2,7 +2,6 @@ package com.ink.lnf.activities
 
 import android.app.DatePickerDialog
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -21,7 +19,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.ink.lnf.R
-import com.ink.lnf.firebase.FirestoreClass
 import com.ink.lnf.models.Lost
 import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_add_item.*
@@ -40,7 +37,8 @@ class AddLostActivity : BaseActivity() {
 
     private lateinit var username : String
 
-    //private lateinit var username : String
+    private lateinit var usermobile : String
+
     /*private val contract = registerForActivityResult(ActivityResultContracts.GetContent()){
         imageView.setImageURI(it)
         addPic.setText("Change Picture")
@@ -59,6 +57,8 @@ class AddLostActivity : BaseActivity() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     username = document.data?.get("name") as String
+                    usermobile = document.data?.get("mobile").toString()
+                    idadditemContact.setText(usermobile)
                 }
             }
             .addOnFailureListener { exception ->
@@ -123,25 +123,9 @@ class AddLostActivity : BaseActivity() {
             val contact = idadditemContact.text.toString()
             val description = idadditemDesc.text.toString()
 
-            /*val db = Firebase.firestore
-
-            val docRef = db.collection("users").document(getCurrentUserID())
-
-            docRef.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        val userInfo = document.toObject(User::class.java)
-                    } else {
-                        Log.d(TAG, "No such document")
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                } */
-
             it.hideKeyboard()
 
-            if (validateForm(name, location, date)) {
+            if (validateForm(name, location, date, contact)) {
                 showProgressDialog("Uploading information")
                 if (uri != null) {
                     storageRef.getReference("images")
@@ -171,7 +155,7 @@ class AddLostActivity : BaseActivity() {
         }
     }
 
-    private fun validateForm(name: String, location: String, date: String) : Boolean {
+    private fun validateForm(name: String, location: String, date: String, contact: String) : Boolean {
         return when {
             TextUtils.isEmpty(name)->{
                 showErrorSnackbar("Please enter the name of item lost")
@@ -183,6 +167,10 @@ class AddLostActivity : BaseActivity() {
             }
             TextUtils.isEmpty(date)->{
                 showErrorSnackbar("Please enter an approximate date")
+                false
+            }
+            TextUtils.isEmpty(contact)->{
+                showErrorSnackbar("Please enter contact information")
                 false
             }
             else->{

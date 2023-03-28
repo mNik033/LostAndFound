@@ -37,6 +37,8 @@ class AddFoundActivity : BaseActivity() {
 
     private lateinit var username : String
 
+    private lateinit var usermobile : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
@@ -50,6 +52,8 @@ class AddFoundActivity : BaseActivity() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     username = document.data?.get("name") as String
+                    usermobile = document.data?.get("mobile").toString()
+                    idadditemContact.setText(usermobile)
                 }
             }
             .addOnFailureListener { exception ->
@@ -112,7 +116,7 @@ class AddFoundActivity : BaseActivity() {
 
             it.hideKeyboard()
 
-            if(validateForm(name,location,date)) {
+            if(validateForm(name,location,date,contact)) {
                 showProgressDialog("Uploading information")
                 if (uri != null) {
                     storageRef.getReference("images")
@@ -142,7 +146,7 @@ class AddFoundActivity : BaseActivity() {
         }
     }
 
-    private fun validateForm(name: String, location: String, date: String) : Boolean {
+    private fun validateForm(name: String, location: String, date: String, contact: String) : Boolean {
         return when {
             TextUtils.isEmpty(name)->{
                 showErrorSnackbar("Please enter the name of item lost")
@@ -154,6 +158,10 @@ class AddFoundActivity : BaseActivity() {
             }
             TextUtils.isEmpty(date)->{
                 showErrorSnackbar("Please enter an approximate date")
+                false
+            }
+            TextUtils.isEmpty(contact)->{
+                showErrorSnackbar("Please enter contact information")
                 false
             }
             else->{

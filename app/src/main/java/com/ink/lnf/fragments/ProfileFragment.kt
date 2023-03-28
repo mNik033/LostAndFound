@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.ink.lnf.R
+import com.ink.lnf.activities.BaseActivity
 import com.ink.lnf.activities.MainActivity
 import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_intro.*
@@ -27,11 +32,17 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val db = Firebase.firestore
+
         val name : String? = pfViewModel.name.value
         idProfileName.text = name
 
         val email : String? = pfViewModel.email.value
         idProfileEmail.text = email
+
+        val mobile : Long? = pfViewModel.mobile.value
+        idaddProfilePhone.setText(mobile.toString())
 
         val image : String? = pfViewModel.image.value
         Glide
@@ -41,5 +52,26 @@ class ProfileFragment: Fragment() {
             .centerCrop()
             .circleCrop()
             .into(idProfilePic);
+
+        idaddProfilePhone?.setOnFocusChangeListener{ v, hasFocus ->
+            idSavefab?.visibility = View.VISIBLE }
+
+        idSavefab.setOnClickListener {
+            val mobile = idaddProfilePhone?.text.toString().toLong()
+
+            val data = hashMapOf(
+                "mobile" to mobile
+            )
+
+            db.collection("users").document(BaseActivity().getCurrentUserID())
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener {
+                    idSavefab?.visibility = View.GONE
+                    idaddProfilePhone.clearFocus()
+                    Toast.makeText(activity,
+                        "Profile information updated successfully!", Toast.LENGTH_LONG)
+                }
+        }
+
     }
 }

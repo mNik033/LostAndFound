@@ -2,6 +2,7 @@ package com.ink.lnf.activities
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -36,6 +37,7 @@ class MainActivity : BaseActivity() {
         pfViewModel.setName(user.name)
         pfViewModel.setEmail(user.email)
         pfViewModel.setImage(user.image)
+        pfViewModel.setMobile(user.mobile)
     }
 
 }

@@ -13,6 +13,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ink.lnf.R
 import com.ink.lnf.activities.AddFoundActivity
+import com.ink.lnf.activities.ItemInfoActivity
 import com.ink.lnf.models.Lost
 import kotlinx.android.synthetic.main.fragment_found.*
 import kotlinx.android.synthetic.main.fragment_found.idrecyclerView
@@ -52,9 +53,24 @@ class FoundFragment : Fragment() {
                             foundList.add(foundItem)
                         }
                     }
-                    idrecyclerView.apply {
-                        adapter = RecyclerAdapter(foundList)
-                    }
+                    val adapter = RecyclerAdapter(foundList)
+                    idrecyclerView.adapter = adapter
+                    adapter.setOnItemClickListener(object : RecyclerAdapter.onItemClickListener{
+                        override fun onItemClick(position: Int) {
+
+                            val intent = Intent(activity, ItemInfoActivity::class.java)
+                            intent.putExtra("UserUID", foundList[position].useruid)
+                            intent.putExtra("Name", foundList[position].name)
+                            intent.putExtra("Location", foundList[position].location)
+                            intent.putExtra("Date", foundList[position].date)
+                            intent.putExtra("UserName", foundList[position].username)
+                            intent.putExtra("Image", foundList[position].image)
+                            intent.putExtra("Description", foundList[position].description)
+                            intent.putExtra("Contact", foundList[position].contact)
+                            getActivity()?.startActivity(intent)
+                        }
+
+                    })
                 }
             }
             .addOnFailureListener{

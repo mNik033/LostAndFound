@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/idCardView"
     style="?attr/materialCardViewFilledStyle"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginHorizontal="8dp"
     app:cardCornerRadius="20dp"
     app:contentPaddingBottom="16dp"
     android:layout_width="match_parent"
@@ -26,18 +26,22 @@
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_image_24"/>
+
             <TextView
                 android:id="@+id/idItemName"
-                android:paddingTop="10dp"
-                android:paddingHorizontal="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Item name"/>
+                android:textColor="@color/md_theme_onSurface"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="16dp"
+                android:text="Item name"
+                android:textSize="24sp" />
             <TextView
                 android:id="@+id/idItemLocation"
                 android:paddingHorizontal="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/md_theme_onSurfaceVariant"
                 android:text="Location"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="16dp"
+                    android:textColor="@color/md_theme_onSurfaceVariant"
                     android:text="Date"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -58,11 +63,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="16dp"
+                    android:textColor="@color/md_theme_onSurfaceVariant"
                     android:text="User name"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
 
     </RelativeLayout>

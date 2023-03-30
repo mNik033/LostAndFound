@@ -12,9 +12,12 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ink.lnf.R
+import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_item_info.*
 
 class ItemInfoActivity : AppCompatActivity() {
+
+    private lateinit var pfp : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +31,15 @@ class ItemInfoActivity : AppCompatActivity() {
             finish()
         }
 
+        val db = Firebase.firestore
+
         val LocationV : TextView = findViewById(R.id.idItemLocationI)
         val DateV : TextView = findViewById(R.id.idItemDateI)
         val UserNameV : TextView = findViewById(R.id.idItemUNameI)
         val ImageV: ImageView = findViewById(R.id.idItemImageI)
         val DescriptionV : TextView = findViewById(R.id.idItemDescI)
         val ContactV : TextView = findViewById(R.id.idItemContactI)
+        val ProfileImgV: ImageView = findViewById(R.id.idProfileImageI)
 
         val bundle: Bundle? = intent.extras
 
@@ -45,6 +51,25 @@ class ItemInfoActivity : AppCompatActivity() {
         val image = bundle.getString("Image")
         val desc = bundle.getString("Description")
         val contact = bundle.getString("Contact")
+
+
+        val docRef = db.collection("users").document(useruid!!)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    pfp = document.data?.get("image") as String
+                    Glide
+                        .with(ProfileImgV)
+                        .load(pfp)
+                        .placeholder(R.drawable.ic_outline_account_circle_24)
+                        .centerCrop()
+                        .circleCrop()
+                        .into(ProfileImgV);
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
 
         toolbar.title = name
         LocationV.text = location

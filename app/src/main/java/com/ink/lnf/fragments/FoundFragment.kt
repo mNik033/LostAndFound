@@ -77,6 +77,4 @@ class FoundFragment : Fragment() {
                 Toast.makeText(activity, it.toString(), Toast.LENGTH_LONG).show()
             }
     }
-
-
 }

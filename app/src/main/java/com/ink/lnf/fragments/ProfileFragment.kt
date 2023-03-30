@@ -66,12 +66,11 @@ class ProfileFragment: Fragment() {
             db.collection("users").document(BaseActivity().getCurrentUserID())
                 .set(data, SetOptions.merge())
                 .addOnSuccessListener {
-                    idSavefab?.visibility = View.GONE
                     idaddProfilePhone.clearFocus()
+                    idSavefab.visibility = View.GONE
                     Toast.makeText(activity,
-                        "Profile information updated successfully!", Toast.LENGTH_LONG)
+                        "Profile information updated successfully!", Toast.LENGTH_LONG).show()
                 }
         }
-
     }
 }

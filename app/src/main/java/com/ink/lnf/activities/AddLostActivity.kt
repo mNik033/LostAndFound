@@ -137,7 +137,7 @@ class AddLostActivity : BaseActivity() {
                                     val image = it.toString()
                                     val lostItemInfo =
                                         Lost(getCurrentUserID(), username, image, name,
-                                            location, date, contact, description, false)
+                                            location, date, contact, description, true)
                                     addLostItem(lostItemInfo)
                                     hideProgressDialog()
                                     finish()
@@ -146,7 +146,7 @@ class AddLostActivity : BaseActivity() {
                 } else {
                     val lostItemInfo =
                         Lost(getCurrentUserID(), username, "", name,
-                            location, date, contact, description, false)
+                            location, date, contact, description, true)
                     addLostItem(lostItemInfo)
                     hideProgressDialog()
                     finish()

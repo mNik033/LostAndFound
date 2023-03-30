@@ -1,5 +1,6 @@
 package com.ink.lnf.fragments
 
+import android.content.Intent
 import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,11 +12,14 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ink.lnf.R
+import com.ink.lnf.activities.AddFoundActivity
 import com.ink.lnf.activities.BaseActivity
+import com.ink.lnf.activities.IntroActivity
 import com.ink.lnf.activities.MainActivity
 import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_intro.*
@@ -71,6 +75,14 @@ class ProfileFragment: Fragment() {
                     Toast.makeText(activity,
                         "Profile information updated successfully!", Toast.LENGTH_LONG).show()
                 }
+        }
+
+        idBtnSignOut.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            Toast.makeText(context, "You've been signed out", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, IntroActivity::class.java)
+            activity?.startActivity(intent)
+            activity?.finish()
         }
     }
 }

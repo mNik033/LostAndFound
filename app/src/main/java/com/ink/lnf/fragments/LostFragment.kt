@@ -55,7 +55,7 @@ class LostFragment : Fragment() {
                     for(data in it.documents){
                         val lostItem : Lost? = data.toObject(Lost::class.java)
                         //TODO display something to represent there's no data
-                        if(lostItem != null){
+                        if(lostItem != null && lostItem.display==true){
                             lostList.add(lostItem)
                         }
                     }

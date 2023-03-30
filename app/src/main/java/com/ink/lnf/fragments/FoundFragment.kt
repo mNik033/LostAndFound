@@ -49,7 +49,7 @@ class FoundFragment : Fragment() {
                 if (!it.isEmpty){
                     for(data in it.documents){
                         val foundItem : Lost? = data.toObject(Lost::class.java)
-                        if(foundItem != null){
+                        if(foundItem != null && foundItem.display==true){
                             foundList.add(foundItem)
                         }
                     }

@@ -128,7 +128,7 @@ class AddFoundActivity : BaseActivity() {
                                     val image = it.toString()
                                     val foundItemInfo =
                                         Found(getCurrentUserID(), username, image, name,
-                                            location, date, contact, description, false)
+                                            location, date, contact, description, true)
                                     addFoundItem(foundItemInfo)
                                     hideProgressDialog()
                                     finish()
@@ -137,7 +137,7 @@ class AddFoundActivity : BaseActivity() {
                 } else {
                     val foundItemInfo =
                         Found(getCurrentUserID(), username, "", name,
-                            location, date, contact, description, false)
+                            location, date, contact, description, true)
                     addFoundItem(foundItemInfo)
                     hideProgressDialog()
                     finish()

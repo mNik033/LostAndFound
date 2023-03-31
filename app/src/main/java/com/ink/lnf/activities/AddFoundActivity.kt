@@ -20,7 +20,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.ink.lnf.R
 import com.ink.lnf.models.Found
-import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_add_item.*
 import java.time.LocalDateTime
 import java.util.*

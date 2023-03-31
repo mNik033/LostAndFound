@@ -1,7 +1,9 @@
 package com.ink.lnf.activities
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.ContentValues
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -20,7 +22,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.ink.lnf.R
 import com.ink.lnf.models.Lost
-import com.ink.lnf.models.User
 import kotlinx.android.synthetic.main.activity_add_item.*
 import java.time.LocalDateTime
 import java.util.*
